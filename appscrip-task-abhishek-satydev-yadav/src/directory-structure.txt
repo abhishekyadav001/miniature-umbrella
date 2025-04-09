@@ -1,0 +1,11 @@
+/
+¦   +-- directory-structure.txt
++-- pages
+¦   ¦   +-- _app.tsx
+¦   ¦   +-- _document.tsx
+¦   ¦   +-- index.tsx
+¦   +-- api
+¦   ¦   ¦   +-- hello.ts
++-- styles
+¦   ¦   +-- globals.css
+¦   ¦   +-- Home.module.css
