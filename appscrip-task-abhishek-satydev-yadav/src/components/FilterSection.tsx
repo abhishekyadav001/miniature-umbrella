@@ -27,6 +27,14 @@ interface FilterState {
     pattern: string[];
 }
 
+type FilterGroupKey = keyof Omit<FilterState, 'customisable'>;
+
+interface FilterGroup {
+    title: string;
+    key: FilterGroupKey;
+    options: string[];
+}
+
 const FilterSection: React.FC = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
@@ -47,7 +55,7 @@ const FilterSection: React.FC = () => {
         pattern: []
     });
 
-    const filterGroups = [
+    const filterGroups: FilterGroup[] = [
         { title: 'WORK', key: 'work', options: ['Office', 'Outdoor', 'Home'] },
         { title: 'FABRIC', key: 'fabric', options: ['Cotton', 'Silk', 'Wool'] },
         { title: 'SEGMENT', key: 'segment', options: ['Premium', 'Regular'] },
@@ -195,8 +203,8 @@ const FilterSection: React.FC = () => {
                                     <label key={option} className={styles.checkboxLabel}>
                                         <input
                                             type="checkbox"
-                                            checked={selectedFilters[group.key as keyof FilterState].includes(option)}
-                                            onChange={() => handleFilterChange(group.key as keyof FilterState, option)}
+                                            checked={selectedFilters[group.key].includes(option)}
+                                            onChange={() => handleFilterChange(group.key, option)}
                                         />
                                         <span className={styles.checkmark}></span>
                                         <span className={styles.labelText}>{option}</span>
