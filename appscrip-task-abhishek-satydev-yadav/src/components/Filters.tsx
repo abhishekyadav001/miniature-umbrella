@@ -1,97 +1,133 @@
 import { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import styles from '@/styles/Filters.module.css';
 
-interface FilterOption {
-    id: string;
-    label: string;
-    value: string;
+interface FilterProps {
+    totalItems: number;
+    onSortChange: (value: string) => void;
 }
 
-interface FilterGroup {
-    id: string;
-    title: string;
-    options: FilterOption[];
-}
-
-const Filters = () => {
-    const [isFiltersOpen, setIsFiltersOpen] = useState(false);
-
-    const filterGroups: FilterGroup[] = [
-        {
-            id: 'category',
-            title: 'Category',
-            options: [
-                { id: 'cat1', label: 'Category 1', value: 'category1' },
-                { id: 'cat2', label: 'Category 2', value: 'category2' },
-                { id: 'cat3', label: 'Category 3', value: 'category3' },
-            ],
-        },
-        {
-            id: 'price',
-            title: 'Price Range',
-            options: [
-                { id: 'price1', label: 'Under $50', value: 'under50' },
-                { id: 'price2', label: '$50 - $100', value: '50to100' },
-                { id: 'price3', label: 'Over $100', value: 'over100' },
-            ],
-        },
-        {
-            id: 'color',
-            title: 'Color',
-            options: [
-                { id: 'color1', label: 'Red', value: 'red' },
-                { id: 'color2', label: 'Blue', value: 'blue' },
-                { id: 'color3', label: 'Green', value: 'green' },
-            ],
-        },
-    ];
-
-    const toggleFilters = () => {
-        setIsFiltersOpen(!isFiltersOpen);
-        document.body.style.overflow = isFiltersOpen ? '' : 'hidden';
-    };
+const Filters: React.FC<FilterProps> = ({ totalItems, onSortChange }) => {
+    const [showFilter, setShowFilter] = useState(false);
 
     return (
-        <>
-            <div className="filterControls">
-                <button className="filterToggle" onClick={toggleFilters}>
-                    Filters
-                </button>
-                <button className="sortToggle">
-                    Sort
-                </button>
-            </div>
-
-            <div className={`filters ${isFiltersOpen ? 'active' : ''}`}>
-                <div className="filterHeader">
-                    <h3>Filters</h3>
-                    <button className="closeFilters" onClick={toggleFilters}>
-                        <FontAwesomeIcon icon={faTimes} />
+        <div className={styles.filterContainer}>
+            <div className={styles.filterHeader}>
+                <div className={styles.filterHeaderLeft}>
+                    <span className={styles.itemCount}>{totalItems} ITEMS</span>
+                    <button
+                        className={styles.hideFilter}
+                        onClick={() => setShowFilter(!showFilter)}
+                    >
+                        {showFilter ? 'HIDE FILTER' : 'SHOW FILTER'}
                     </button>
                 </div>
-
-                {filterGroups.map((group) => (
-                    <div key={group.id} className="filterGroup">
-                        <h4 className="filterTitle">{group.title}</h4>
-                        <ul className="filterOptions">
-                            {group.options.map((option) => (
-                                <li key={option.id}>
-                                    <label>
-                                        <input type="checkbox" value={option.value} />
-                                        {option.label}
-                                    </label>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                ))}
-
-                <button className="applyFiltersBtn" onClick={toggleFilters}>
-                    Apply Filters
-                </button>
+                <div className={styles.filterHeaderRight}>
+                    <select
+                        className={styles.sortSelect}
+                        onChange={(e) => onSortChange(e.target.value)}
+                        defaultValue="recommended"
+                    >
+                        <option value="recommended">RECOMMENDED</option>
+                        <option value="newest">NEWEST FIRST</option>
+                        <option value="popular">POPULAR</option>
+                        <option value="price_high_low">PRICE: HIGH TO LOW</option>
+                        <option value="price_low_high">PRICE: LOW TO HIGH</option>
+                    </select>
+                </div>
             </div>
-        </>
+
+            <div className={`${styles.sidebar} ${showFilter ? styles.show : ''}`}>
+                <div className={styles.filterGroup}>
+                    <label className={styles.checkboxLabel}>
+                        <input type="checkbox" />
+                        <span className={styles.checkmark}></span>
+                        <span className={styles.labelText}>CUSTOMISABLE</span>
+                    </label>
+                </div>
+
+                <div className={styles.filterGroup}>
+                    <h4>IDEAL FOR</h4>
+                    <label className={styles.checkboxLabel}>
+                        <input type="checkbox" />
+                        <span className={styles.checkmark}></span>
+                        <span className={styles.labelText}>All</span>
+                    </label>
+                    <label className={styles.checkboxLabel}>
+                        <input type="checkbox" />
+                        <span className={styles.checkmark}></span>
+                        <span className={styles.labelText}>Men</span>
+                    </label>
+                    <label className={styles.checkboxLabel}>
+                        <input type="checkbox" />
+                        <span className={styles.checkmark}></span>
+                        <span className={styles.labelText}>Women</span>
+                    </label>
+                </div>
+
+                <div className={styles.filterGroup}>
+                    <h4>OCCASION</h4>
+                    <label className={styles.checkboxLabel}>
+                        <input type="checkbox" />
+                        <span className={styles.checkmark}></span>
+                        <span className={styles.labelText}>All</span>
+                    </label>
+                </div>
+
+                <div className={styles.filterGroup}>
+                    <h4>WORK</h4>
+                    <label className={styles.checkboxLabel}>
+                        <input type="checkbox" />
+                        <span className={styles.checkmark}></span>
+                        <span className={styles.labelText}>All</span>
+                    </label>
+                </div>
+
+                <div className={styles.filterGroup}>
+                    <h4>FABRIC</h4>
+                    <label className={styles.checkboxLabel}>
+                        <input type="checkbox" />
+                        <span className={styles.checkmark}></span>
+                        <span className={styles.labelText}>All</span>
+                    </label>
+                </div>
+
+                <div className={styles.filterGroup}>
+                    <h4>SEGMENT</h4>
+                    <label className={styles.checkboxLabel}>
+                        <input type="checkbox" />
+                        <span className={styles.checkmark}></span>
+                        <span className={styles.labelText}>All</span>
+                    </label>
+                </div>
+
+                <div className={styles.filterGroup}>
+                    <h4>SUITABLE FOR</h4>
+                    <label className={styles.checkboxLabel}>
+                        <input type="checkbox" />
+                        <span className={styles.checkmark}></span>
+                        <span className={styles.labelText}>All</span>
+                    </label>
+                </div>
+
+                <div className={styles.filterGroup}>
+                    <h4>RAW MATERIALS</h4>
+                    <label className={styles.checkboxLabel}>
+                        <input type="checkbox" />
+                        <span className={styles.checkmark}></span>
+                        <span className={styles.labelText}>All</span>
+                    </label>
+                </div>
+
+                <div className={styles.filterGroup}>
+                    <h4>PATTERN</h4>
+                    <label className={styles.checkboxLabel}>
+                        <input type="checkbox" />
+                        <span className={styles.checkmark}></span>
+                        <span className={styles.labelText}>All</span>
+                    </label>
+                </div>
+            </div>
+        </div>
     );
 };
 
